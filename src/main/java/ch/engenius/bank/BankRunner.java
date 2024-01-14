@@ -43,6 +43,11 @@ public class BankRunner {
         int accountInNumber = random.nextInt(maxAccount);
         int accountOutNumber = random.nextInt(maxAccount);
 
+        while (accountInNumber == accountOutNumber) {
+            accountInNumber = random.nextInt(maxAccount);
+            accountOutNumber = random.nextInt(maxAccount);
+        }
+
         Account accIn = bank.getAccount(accountInNumber);
         Account accOut = bank.getAccount(accountOutNumber);
 
