@@ -34,10 +34,11 @@ public class AccountTest {
 
     @Test
     public void testWithdraw() {
-        account.deposit(BigDecimal.valueOf(100));
+        account = new Account(BigDecimal.valueOf(500));
+        account.withdraw(BigDecimal.valueOf(200));
 
         assertThat(account.getMoney())
-                .isEqualTo(BigDecimal.valueOf(100));
+                .isEqualTo(BigDecimal.valueOf(300));
     }
 
     @Test
