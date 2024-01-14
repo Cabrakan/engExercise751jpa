@@ -6,13 +6,12 @@ import java.util.HashMap;
 public class Bank {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
-    public Account registerAccount(int accountNumber, BigDecimal amount) {
+    public void registerAccount(int accountID, BigDecimal amount) {
         Account account = new Account(amount);
-        accounts.put(accountNumber, account);
-        return account;
+        accounts.put(accountID, account);
     }
 
-    public Account getAccount(int number) {
-        return accounts.get(number);
+    public Account getAccount(int accountID) {
+        return accounts.get(accountID);
     }
 }
