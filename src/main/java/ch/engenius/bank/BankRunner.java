@@ -15,14 +15,14 @@ public class BankRunner {
 
     public static void main(String[] args) {
         BankRunner runner = new BankRunner();
+        BigDecimal defaultDeposit = BigDecimal.valueOf(1000);
         int accounts = 100;
-        int defaultDeposit = 1000;
         int iterations = 10000;
 
         runner.registerAccounts(accounts, defaultDeposit);
-        runner.sanityCheck(accounts, accounts * defaultDeposit);
+        runner.sanityCheck(accounts, defaultDeposit.multiply(BigDecimal.valueOf(accounts)));
         runner.runBank(iterations, accounts);
-        runner.sanityCheck(accounts, accounts * defaultDeposit);
+        runner.sanityCheck(accounts, defaultDeposit.multiply(BigDecimal.valueOf(accounts)));
     }
 
     private void runBank(int iterations, int maxAccount) {
@@ -39,7 +39,7 @@ public class BankRunner {
     }
 
     private void runRandomOperation(int maxAccount) {
-        double transfer = random.nextDouble() * 100.0;
+        BigDecimal transfer = BigDecimal.valueOf(random.nextDouble() * 100.0);
         int accountInNumber = random.nextInt(maxAccount);
         int accountOutNumber = random.nextInt(maxAccount);
 
@@ -50,20 +50,20 @@ public class BankRunner {
         accOut.withdraw(transfer);
     }
 
-    private void sanityCheck(int accountMaxNumber, int totalExpectedMoney) {
+    private void sanityCheck(int accountMaxNumber, BigDecimal totalExpectedMoney) {
         BigDecimal sum = IntStream.range(0, accountMaxNumber)
                 .mapToObj(bank::getAccount)
-                .map(Account::getMoneyAsBigDecimal)
+                .map(Account::getMoney)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (sum.intValue() != totalExpectedMoney) {
+        if (sum.compareTo(totalExpectedMoney) != 0) {
             throw new IllegalStateException("we got " + sum + " != " + totalExpectedMoney + " (expected)");
         }
 
-        System.out.println("sanity check OK");
+        System.out.println("Sanity check OK.");
     }
 
-    private void registerAccounts(int number, int defaultMoney) {
+    private void registerAccounts(int number, BigDecimal defaultMoney) {
         for (int i = 0; i < number; i++) {
             bank.registerAccount(i, defaultMoney);
         }
