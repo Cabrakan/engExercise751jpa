@@ -9,16 +9,20 @@ public class Account {
         this.money = money;
     }
 
-    public void withdraw(BigDecimal amount) {
+    public synchronized void withdraw(BigDecimal amount) {
         if (money.subtract(amount).signum() == -1) {
             throw new IllegalStateException("Not enough credits on account.");
         }
 
-        this.money = this.money.subtract(amount);
+        money = money.subtract(amount);
     }
 
-    public void deposit(BigDecimal amount) {
-        this.money = this.money.add(amount);
+    public synchronized void deposit(BigDecimal amount) {
+        if (amount.signum() == -1) {
+            throw new IllegalStateException("Amount cannot be negative.");
+        }
+
+        money = money.add(amount);
     }
 
     public BigDecimal getMoney() {
