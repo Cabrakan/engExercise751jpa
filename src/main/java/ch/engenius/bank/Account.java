@@ -9,20 +9,30 @@ public class Account {
         this.money = money;
     }
 
-    public synchronized void withdraw(BigDecimal amount) {
-        if (money.subtract(amount).signum() == -1) {
-            throw new IllegalStateException("Not enough credits on account.");
-        }
-
-        money = money.subtract(amount);
+    public void withdraw(BigDecimal amount) {
+        updateAccountBalance(amount, AccountAction.WITHDRAW);
     }
 
-    public synchronized void deposit(BigDecimal amount) {
-        if (amount.signum() == -1) {
-            throw new IllegalStateException("Amount cannot be negative.");
+    public void deposit(BigDecimal amount) {
+        updateAccountBalance(amount, AccountAction.DEPOSIT);
+    }
+
+    private synchronized void updateAccountBalance(BigDecimal amount, AccountAction accountAction) {
+        if (AccountAction.WITHDRAW.equals(accountAction)) {
+            if (money.subtract(amount).signum() == -1) {
+                throw new IllegalStateException("Not enough credits on account.");
+            }
+
+            money = money.subtract(amount);
         }
 
-        money = money.add(amount);
+        if (AccountAction.DEPOSIT.equals(accountAction)) {
+            if (amount.signum() == -1) {
+                throw new IllegalStateException("Amount cannot be negative.");
+            }
+
+            money = money.add(amount);
+        }
     }
 
     public BigDecimal getMoney() {
