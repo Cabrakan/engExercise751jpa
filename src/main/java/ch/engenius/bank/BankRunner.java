@@ -51,8 +51,8 @@ public class BankRunner {
         Account accIn = bank.getAccount(accountInNumber);
         Account accOut = bank.getAccount(accountOutNumber);
 
-        accIn.deposit(transfer);
         accOut.withdraw(transfer);
+        accIn.deposit(transfer);
     }
 
     private void sanityCheck(int accountMaxNumber, BigDecimal totalExpectedMoney) {
