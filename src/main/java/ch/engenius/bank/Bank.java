@@ -1,18 +1,17 @@
 package ch.engenius.bank;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class Bank {
-    private HashMap<Integer, Account> accounts = new HashMap<>();
+    private final HashMap<Integer, Account> accounts = new HashMap<>();
 
-    public Account registerAccount(int accountNumber, int amount) {
-        Account account = new Account();
-        account.setMoney(amount);
-        accounts.put(accountNumber, account);
-        return account;
+    public void registerAccount(int accountID, BigDecimal amount) {
+        Account account = new Account(amount);
+        accounts.put(accountID, account);
     }
 
-    public Account getAccount( int number) {
-        return accounts.get(number);
+    public Account getAccount(int accountID) {
+        return accounts.get(accountID);
     }
 }
